@@ -99,7 +99,7 @@ defmodule Ueberauth.Strategy.Zauth do
   end
 
   defp fetch_uid(field, conn) do
-    conn.private.github_user[field]
+    conn.private.zauth_user[field]
   end
 
   defp fetch_user(conn, token) do
