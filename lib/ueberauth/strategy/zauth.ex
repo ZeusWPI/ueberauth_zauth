@@ -50,12 +50,33 @@ defmodule Ueberauth.Strategy.Zauth do
     |> put_private(:zauth_token, nil)
   end
 
+  def uid(conn) do
+    conn |> option(:uid_field) |> to_string() |> fetch_uid(conn)
+  end
+
+  @doc """
+  Includes the credentials from the GitHub response.
+  """
+  def credentials(conn) do
+    token = conn.private.zauth_token
+    scope_string = token.other_params["scope"] || ""
+    scopes = String.split(scope_string, ",")
+
+    %Credentials{
+      token: token.access_token,
+      refresh_token: token.refresh_token,
+      expires_at: token.expires_at,
+      token_type: token.token_type,
+      expires: !!token.expires_at,
+      scopes: scopes
+    }
+  end
+
   def info(conn) do
     user = conn.private.zauth_user
 
     %Info{
-      name: user["username"],
-      admin: user["admin"]
+      name: user["username"]
     }
   end
 
@@ -70,6 +91,10 @@ defmodule Ueberauth.Strategy.Zauth do
         user: conn.private.zauth_user
       }
     }
+  end
+
+  defp fetch_uid(field, conn) do
+    conn.private.github_user[field]
   end
 
   defp fetch_user(conn, token) do
