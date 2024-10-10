@@ -15,8 +15,8 @@ defmodule Ueberauth.Strategy.Zauth.OAuth do
   @defaults [
     strategy: __MODULE__,
     site: "https://zauth.zeus.gent",
-    authorize_url: "https://zauth.zeus.gent/oauth/authorize",
-    token_url: "https://zauth.zeus.gent/oauth/token",
+    authorize_url: "https://zauth.zeus.gent/oauth/authorize/",
+    token_url: "https://zauth.zeus.gent/oauth/token/",
     headers: [{"user-agent", "ueberauth-zauth"}]
   ]
 
